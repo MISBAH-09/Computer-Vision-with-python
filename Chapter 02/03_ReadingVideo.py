@@ -32,18 +32,29 @@ while True:
         print("End of video reached.")
         break
 
-    # cv2.imshow("Video", frame)
+    # Flip frame
+    flipped_frame = cv2.flip(frame, -1)
 
-    # 0 flip vertically, 1 flip horizontally, -1 flip both
-    flipped_frame = cv2.flip(frame, -1)  # horizontal flip
+    # Grayscale frame
     gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    gray_frame_bgr = cv2.cvtColor(gray_frame, cv2.COLOR_GRAY2BGR)
 
-    # Show flipped video
+    # ----------------------------
+    # Add FPS text to both frames
+    # ----------------------------
+    text = f"FPS: {fps:.2f}"
+    cv2.putText(flipped_frame, text, (20, 40),
+                cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
+
+    cv2.putText(gray_frame_bgr, text, (20, 40),
+                cv2.FONT_HERSHEY_SIMPLEX, 1.0, (0, 255, 0), 2)
+
+    # Show video
     cv2.imshow("Video", flipped_frame)
 
-    # out.write()
+    # Save videos
     out.write(flipped_frame)
-    out2.write(cv2.cvtColor(gray_frame, cv2.COLOR_GRAY2BGR))
+    out2.write(gray_frame_bgr)
 
     # Quit manually
     if cv2.waitKey(25) & 0xFF == ord('q'):
